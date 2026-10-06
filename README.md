@@ -6,6 +6,8 @@
 warp-masque install 40000
 warp-masque status
 warp-masque test 40000
+warp-masque stop
+warp-masque start
 warp-masque diagnose
 warp-masque repair 40000
 warp-masque uninstall
@@ -13,4 +15,4 @@ warp-masque uninstall
 
 该后端不修改系统默认路由。Cloudflare 新版 Local Proxy 仅支持 MASQUE；如果 VPS 上游阻断 Happy Eyeballs/MASQUE，请改用独立的 `warp-wireguard-manager` 后端。
 
-本项目供 `v2ray-manager` 调用，也可以独立使用。
+本项目供 `v2ray-manager` 调用，也可以独立使用。对调用方提供统一的 `install/status/test/start/stop/diagnose/repair/uninstall/version` 接口。

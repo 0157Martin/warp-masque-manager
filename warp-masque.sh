@@ -63,7 +63,9 @@ install_client() {
 
 configure_proxy() {
   local port=$1
-  [[ $port =~ ^[0-9]+$ ]] && (( port >= 1024 && port <= 65535 )) || die 'SOCKS5 端口必须在 1024-65535。'
+  if [[ ! $port =~ ^[0-9]+$ ]] || (( port < 1024 || port > 65535 )); then
+    die 'SOCKS5 端口必须在 1024-65535。'
+  fi
   systemctl enable --now warp-svc
   warp_cli registration show >/dev/null 2>&1 || timeout 45 warp-cli --accept-tos registration new
   warp_cli tunnel protocol set MASQUE
@@ -112,6 +114,15 @@ repair_backend() {
   green 'MASQUE WARP 后端已修复。'
 }
 
+start_backend() {
+  systemctl enable --now warp-svc
+  warp_cli connect
+}
+
+stop_backend() {
+  warp_cli disconnect >/dev/null 2>&1 || true
+}
+
 uninstall_backend() {
   if command -v warp-cli >/dev/null 2>&1; then
     warp_cli disconnect >/dev/null 2>&1 || true
@@ -129,12 +140,16 @@ main() {
     install) install_backend "${2:-$DEFAULT_PORT}" ;;
     status) status_backend ;;
     test) test_proxy "${2:-$DEFAULT_PORT}" ;;
+    start) start_backend ;;
+    stop) stop_backend ;;
     diagnose) diagnose_backend ;;
     repair) repair_backend "${2:-$DEFAULT_PORT}" ;;
     uninstall) uninstall_backend ;;
     version) printf '%s %s\n' "$APP_NAME" "$VERSION" ;;
-    *) die '用法：warp-masque [install|status|test|diagnose|repair|uninstall|version] [端口]' ;;
+    *) die '用法：warp-masque [install|status|test|start|stop|diagnose|repair|uninstall|version] [端口]' ;;
   esac
 }
 
-main "$@"
+if [[ ${BASH_SOURCE[0]} == "$0" ]]; then
+  main "$@"
+fi
