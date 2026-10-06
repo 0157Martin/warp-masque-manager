@@ -5,7 +5,7 @@
 set -Eeuo pipefail
 
 readonly APP_NAME=warp-masque-manager
-readonly VERSION=1.0.0
+readonly APP_VERSION=1.0.1
 readonly CONFIG_DIR=/etc/warp-masque-manager
 readonly STATE_FILE="$CONFIG_DIR/state.env"
 readonly DEFAULT_PORT=40000
@@ -151,7 +151,7 @@ main() {
     diagnose) diagnose_backend ;;
     repair) repair_backend "${2:-$DEFAULT_PORT}" ;;
     uninstall) uninstall_backend ;;
-    version) printf '%s %s\n' "$APP_NAME" "$VERSION" ;;
+    version) printf '%s %s\n' "$APP_NAME" "$APP_VERSION" ;;
     *) die '用法：warp-masque [install|status|test|start|stop|diagnose|repair|uninstall|version] [端口]' ;;
   esac
 }

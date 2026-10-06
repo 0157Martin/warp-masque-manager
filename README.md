@@ -16,3 +16,5 @@ warp-masque uninstall
 该后端不修改系统默认路由。Cloudflare 新版 Local Proxy 仅支持 MASQUE；如果 VPS 上游阻断 Happy Eyeballs/MASQUE，请改用独立的 `warp-wireguard-manager` 后端。
 
 本项目供 `v2ray-manager` 调用，也可以独立使用。对调用方提供统一的 `install/status/test/start/stop/diagnose/repair/uninstall/version` 接口。
+
+安装脚本使用独立的 `APP_VERSION` 标识自身版本，避免与 Debian/Ubuntu `/etc/os-release` 中的 `VERSION` 变量冲突；CI 会实际加载系统版本文件验证该路径。
