@@ -2,6 +2,28 @@
 
 使用 Cloudflare 官方 Linux 客户端，以 Local Proxy 模式提供仅本机可访问的 SOCKS5 代理。安装器优先使用 MASQUE；若默认 Happy Eyeballs 失败，会测试固定 IPv4 入口和备用端口，最后尝试官方客户端支持的 WireGuard 协议。
 
+## 一键安装、验证与卸载
+
+```bash
+# 安装到 127.0.0.1:40000，并完成真实 WARP 流量验证
+bash <(curl -fsSL https://raw.githubusercontent.com/0157Martin/warp-masque-manager/main/install.sh) install
+
+# 验证版本、服务、监听和 Cloudflare trace（必须返回 warp=on）
+warp-masque version
+warp-masque status
+warp-masque test 40000
+
+# 彻底卸载官方客户端、注册、配置和管理命令
+bash <(curl -fsSL https://raw.githubusercontent.com/0157Martin/warp-masque-manager/main/install.sh) uninstall
+```
+
+自定义本机 SOCKS5 端口：
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/0157Martin/warp-masque-manager/main/install.sh) install 41000
+bash <(curl -fsSL https://raw.githubusercontent.com/0157Martin/warp-masque-manager/main/install.sh) verify 41000
+```
+
 ```bash
 warp-masque install 40000
 warp-masque status
