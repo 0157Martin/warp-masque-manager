@@ -99,12 +99,18 @@ status_backend() {
   proxy_ready "$port" && test_proxy "$port" || return 1
 }
 
+redact_log() {
+  sed -E \
+    -e 's/([Ll]icense|[Tt]oken|[Ss]ecret|[Pp]rivate[_ -]?[Kk]ey|[Aa]ccount|[Dd]evice)[=: ][^ ,;}]+/\1=[REDACTED]/g' \
+    -e 's/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/[REDACTED-UUID]/g'
+}
+
 diagnose_backend() {
   printf '%s\n' 'IPv4 默认路由：'; ip -4 route show default || true
   printf '%s\n' 'IPv6 默认路由：'; ip -6 route show default || true
   printf '%s\n' 'WARP 状态：'; warp_cli status 2>&1 || true
   printf '%s\n' '最近连接日志：'
-  journalctl -u warp-svc -n 200 --no-pager 2>&1 | grep -Ei 'Connecting|HappyEyeballs|ERROR|WARN|failed|timeout|unreachable' | tail -n 30 || true
+  journalctl -u warp-svc -n 200 --no-pager 2>&1 | grep -Ei 'Connecting|HappyEyeballs|ERROR|WARN|failed|timeout|unreachable' | tail -n 30 | redact_log || true
   yellow 'Local Proxy 只能使用 MASQUE；实际入口以 warp-cli status 当前显示为准。'
 }
 
