@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # Cloudflare official Linux client exposed as a MASQUE local SOCKS5 proxy.
-# Author: 0157Martin
+# Author: Martin&林知远
 # SPDX-License-Identifier: GPL-3.0-or-later
 set -Eeuo pipefail
 
 readonly APP_NAME=warp-masque-manager
-readonly APP_VERSION=1.1.0
+readonly APP_VERSION=1.1.1
+readonly AUTHOR='Martin&林知远'
 readonly CONFIG_DIR=/etc/warp-masque-manager
 readonly STATE_FILE="$CONFIG_DIR/state.env"
 readonly DEFAULT_PORT=40000
@@ -202,7 +203,7 @@ main() {
     diagnose) diagnose_backend ;;
     repair) repair_backend "${2:-$DEFAULT_PORT}" ;;
     uninstall) uninstall_backend ;;
-    version) printf '%s %s\n' "$APP_NAME" "$APP_VERSION" ;;
+    version) printf '%s %s by %s\n' "$APP_NAME" "$APP_VERSION" "$AUTHOR" ;;
     *) die '用法：warp-masque [install|status|test|start|stop|diagnose|repair|uninstall|version] [端口]' ;;
   esac
 }

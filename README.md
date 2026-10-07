@@ -1,5 +1,6 @@
 # warp-masque-manager
 
+作者：**Martin&林知远**
 使用 Cloudflare 官方 Linux 客户端，以 Local Proxy 模式提供仅本机可访问的 SOCKS5 代理。安装器优先使用 MASQUE；若默认 Happy Eyeballs 失败，会测试固定 IPv4 入口和备用端口，最后尝试官方客户端支持的 WireGuard 协议。
 
 ## 一键安装、验证与卸载
